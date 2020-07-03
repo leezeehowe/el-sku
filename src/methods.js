@@ -106,22 +106,3 @@ export const mixSkuAndColumn = (skus, column) => {
   })
   return clone
 }
-
-/**响应slot列自定义模板要修改tableData
- * @param {String} prop 列属性名
- * @param {Object} val 行值
- */
-export function handleSlotChanged(prop, val) {
-  const {tableData, editableRow} = this
-  if (
-    editableRow < 0 ||
-    editableRow >= tableData.size ||
-    !Object.prototype.hasOwnProperty.call(tableData[editableRow], prop)
-  ) {
-    throw new Error(
-      '修改table Data失败！请确保当前行可编辑以及传递的prop名正确。'
-    )
-  }
-  tableData[editableRow][prop] = val
-  this.tableData = tableData
-}

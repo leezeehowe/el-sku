@@ -41,7 +41,7 @@ module.exports = {
   styleguideDir: 'docs',
   pagePerSection: true,
   ribbon: {
-    url: 'https://github.com/lee/el-sku'
+    url: 'https://github.com/leezeehowe/el-sku'
   },
   sections,
   webpackConfig: {

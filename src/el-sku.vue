@@ -119,10 +119,10 @@ import {
   extraSpecHead,
   extraSpecVal,
   generateSku,
-  mixSkuAndColumn,
-  handleSlotChanged
+  mixSkuAndColumn
 } from './methods'
 import {specificationValidator} from './validator.js'
+import {slotChangedEvent} from './event.js'
 export default {
   name: 'ElSku',
   components: {
@@ -297,20 +297,24 @@ export default {
     }
   },
   mounted: function() {
+    // 注入一个event-bus
     this.$root.__proto__[
       Symbol.for('el-sku-event-bus')
     ] = new this.__proto__.constructor()
     /**
-     * el-sku会监听slot的自定义列模板对行数据的改变
+     * 监听slot的自定义列模板对行数据的改变
      */
     this[Symbol.for('el-sku-event-bus')].$on(
-      'slot-changed',
-      handleSlotChanged.bind(this)
+      slotChangedEvent.event,
+      slotChangedEvent.handler.bind(this)
     )
   },
   created: function() {
+    // 提取出规格属性及其属性值，分别存储于每一个数组中
     const specVal = extraSpecVal(this.specification)
+    // 根据笛卡儿积映射提取出的所有数组生成SKU
     const skus = generateSku(specVal)
+    // 混合SKU和自定义列
     const data = mixSkuAndColumn(skus, this.editableColumns)
     this.tableData = data
   },
