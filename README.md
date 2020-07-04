@@ -1,9 +1,9 @@
 # el-sku
 
-[![Build Status](https://badgen.net/travis/lee/el-sku/master)](https://travis-ci.com/lee/el-sku)
-[![NPM Download](https://badgen.net/npm/dm/@lee/el-sku)](https://www.npmjs.com/package/@lee/el-sku)
-[![NPM Version](https://badge.fury.io/js/%40lee%2Fel-sku.svg)](https://www.npmjs.com/package/@lee/el-sku)
-[![NPM License](https://badgen.net/npm/license/@lee/el-sku)](https://github.com/lee/el-sku/blob/master/LICENSE)
+[![Build Status](https://badgen.net/travis/leezeehowe/el-sku/master)](https://travis-ci.com/lee/el-sku)
+[![NPM Download](https://badgen.net/npm/dm/@leezeehowe/el-sku)](https://www.npmjs.com/package/@lee/el-sku)
+[![NPM Version](https://badge.fury.io/js/%40leezeehowe%2Fel-sku.svg)](https://www.npmjs.com/package/@lee/el-sku)
+[![NPM License](https://badgen.net/npm/license/@leezeehowe/el-sku)](https://github.com/lee/el-sku/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/lee/el-sku/pulls)
 [![Automated Release Notes by gren](https://img.shields.io/badge/%F0%9F%A4%96-release%20notes-00B2EE.svg)](https://github-tools.github.io/github-release-notes/)
 

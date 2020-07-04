@@ -1,17 +1,19 @@
 {
-  "name": "@lee/el-sku",
+  "name": "@leezeehowe/el-sku",
   "version": "1.0.0",
   "description": "",
-  "author": "https://github.com/lee",
+  "author": "https://github.com/leezeehowe",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lee/el-sku.git"
+    "url": "https://github.com/leezeehowe/el-sku.git"
   },
   "keywords": [
     "vue",
     "sfc",
-    "component"
+    "component",
+    "SKU",
+    "commodity"
   ],
   "files": [
     "src",
