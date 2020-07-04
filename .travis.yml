@@ -9,13 +9,15 @@ git:
 install:
 - yarn --frozen-lockfile
 - yarn test
+before_script:
+- chmod 777 ./build.sh
 script:
 - "./build.sh"
 after_script: 
 cache: yarn
 deploy:
-  matrix:
-  - provider: npm
-    skip-cleanup: true
-    api_key:
-      secure: uULYCfhsuMdvc/Yd44UGbNIQiej59wJCp/e0T4M6GJ8J8KNZRLI7xmnA9XvWYZdC7yZ0e5EU4gfeeYYZ2gucLdBbgGrdheWYg3f9QKxiPV3Vo2Dg64j+d8vumsCvjOdcGUuFC7R5sc4U44qsoSsljTCVg6mDqoPhMdxTwNzOnJFFcx2Fq4k/BcEU3LecGvBxAkFy1BHfhBDBe0MrrfDvLM8SuFErV7rmv2oqcyO9LuF9FRuLo6i23yUtKjSyjp+Kw3DlabehDjPYAkjckcC5LLKHV7rUZTt9x/tHvNMe7ZyH/Pt0VbuERxuYBwnxBqIDEO5w/1yLlh6tECWQ4hPsejwcU5mo4kehfFflNFzLyx5a5u6raUDhjGgsGKQDRnVA9sA14f9tN9tJQSKS1Xew8P88PdMfw92em7zijW+coJIaSQoCV9cyqPgBC0RfoS3N0Pczbq1hAoGy/h5nc5FDh++gVuRMiwGqY/7EEB4M9uu5vPacsfBs8z/vE+LFNThQwjEmZ08u5M4XlIYBPDMasWX/pz4cASImewKSp0MUYZ9fxlmzAjZvjC77iyRwsbEbIf7dv72OPKoyGfLrz/IA5kIfUtxePs+HWJ5aq9Z94RUBNbEo8lTOEDbpJmEWgzsWV/ZnTstlfDGURkDMKi37kdnoyey7yZ20I6wf5qZVqhc=
+- provider: npm
+  skip-cleanup: true
+  api_key:
+    secure: uULYCfhsuMdvc/Yd44UGbNIQiej59wJCp/e0T4M6GJ8J8KNZRLI7xmnA9XvWYZdC7yZ0e5EU4gfeeYYZ2gucLdBbgGrdheWYg3f9QKxiPV3Vo2Dg64j+d8vumsCvjOdcGUuFC7R5sc4U44qsoSsljTCVg6mDqoPhMdxTwNzOnJFFcx2Fq4k/BcEU3LecGvBxAkFy1BHfhBDBe0MrrfDvLM8SuFErV7rmv2oqcyO9LuF9FRuLo6i23yUtKjSyjp+Kw3DlabehDjPYAkjckcC5LLKHV7rUZTt9x/tHvNMe7ZyH/Pt0VbuERxuYBwnxBqIDEO5w/1yLlh6tECWQ4hPsejwcU5mo4kehfFflNFzLyx5a5u6raUDhjGgsGKQDRnVA9sA14f9tN9tJQSKS1Xew8P88PdMfw92em7zijW+coJIaSQoCV9cyqPgBC0RfoS3N0Pczbq1hAoGy/h5nc5FDh++gVuRMiwGqY/7EEB4M9uu5vPacsfBs8z/vE+LFNThQwjEmZ08u5M4XlIYBPDMasWX/pz4cASImewKSp0MUYZ9fxlmzAjZvjC77iyRwsbEbIf7dv72OPKoyGfLrz/IA5kIfUtxePs+HWJ5aq9Z94RUBNbEo8lTOEDbpJmEWgzsWV/ZnTstlfDGURkDMKi37kdnoyey7yZ20I6wf5qZVqhc=
+  
