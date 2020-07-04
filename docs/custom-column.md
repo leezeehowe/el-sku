@@ -20,7 +20,7 @@ this[Symbol.for('el-sku-event-bus')].$emit('slot-changed', prop, val)
 
 ``` vue
 <template>
-  <el-sku :customColumn="customColumn" :specification="specification">
+  <el-sku :customColumn="customColumn" :specification="specification" v-model="data">
     <template #status="scope">
       {{scope.table.row.status}}
     </template>
@@ -110,7 +110,8 @@ export default {
   data() {
     return {
         customColumn: customColumns,
-        specification: specifications
+        specification: specifications,
+        data: []
     }
   },
   methods: {
