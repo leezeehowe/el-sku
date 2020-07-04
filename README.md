@@ -105,6 +105,8 @@ const customAssistance = [
 ]
 ```
 
+- **v-model is fulfilled**, you can use v-model to sync tabledata real-time.
+
 - There will be more following features...
   - built-in submittal using `Axios`.
   - custom field verifications.

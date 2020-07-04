@@ -1,5 +1,5 @@
 通过specifications向el-sku传递商品规格属性及其属性值，随后el-sku将结合自定义列以及默认列生成sku、表格数据、表格头。  
-默认列有SKU编码、价格、库存。
+默认列有SKU编码、价格、库存。支持v-model获取表格数据。
 
 ``` javascript
 defaultColumn: [{
@@ -28,7 +28,7 @@ defaultColumn: [{
 
 ``` vue
 <template>
-  <el-sku :specification="specification" size="small"></el-sku>
+  <el-sku :specification="specification" size="small" v-model="data"></el-sku>
 </template>
 
 <script>
@@ -82,7 +82,8 @@ const specifications = [
 export default {
   data() {
     return {
-      specification: specifications
+      specification: specifications,
+      data: []
     }
   }
 }

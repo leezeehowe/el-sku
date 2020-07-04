@@ -138,7 +138,15 @@ export default {
     ElSkuPrice,
     ElSkuStock
   },
+  model: {
+    prop: 'value',
+    event: 'input'
+  },
   props: {
+    value: {
+      type: Array,
+      default: () => []
+    },
     /**
      * 表格大小，参数值和element-ui一致
      */
@@ -294,6 +302,14 @@ export default {
         })
         .filter(_ => !_.disabled)
         .concat(customColumn)
+    }
+  },
+  watch: {
+    tableData: {
+      handler: function(val) {
+        this.$emit('input', val)
+      },
+      deep: true
     }
   },
   mounted: function() {
