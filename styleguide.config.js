@@ -38,7 +38,7 @@ const sections = (() => {
 })()
 
 module.exports = {
-  styleguideDir: 'docs',
+  styleguideDir: 'dist/docs',
   pagePerSection: true,
   ribbon: {
     url: 'https://github.com/leezeehowe/el-sku'

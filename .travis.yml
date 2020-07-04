@@ -15,14 +15,6 @@ after_script:
 cache: yarn
 deploy:
   matrix:
-  - provider: pages
-    local-dir: docs
-    github-token: "$GITHUB_TOKEN"
-    skip-cleanup: true
-    keep-history: true
-    target-branch: gh-pages
-    on:
-      branch: master
   - provider: npm
     skip-cleanup: true
     api_key:
