@@ -11,6 +11,7 @@ install:
 - yarn test
 before_script:
 - chmod 777 ./build.sh
+- npm config set registry=http://registry.npmjs.org
 script:
 - "./build.sh"
 after_script: 
