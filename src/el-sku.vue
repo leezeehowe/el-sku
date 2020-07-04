@@ -112,9 +112,9 @@ import {
   Tag,
   MessageBox
 } from 'element-ui'
-import ElSkuCode from './components/el-sku-code'
-import ElSkuPrice from './components/el-sku-price'
-import ElSkuStock from './components/el-sku-stock'
+import ElSkuCode from './components/el-sku-code.vue'
+import ElSkuPrice from './components/el-sku-price.vue'
+import ElSkuStock from './components/el-sku-stock.vue'
 import {
   extraSpecHead,
   extraSpecVal,
