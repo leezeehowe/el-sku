@@ -11,16 +11,14 @@
 
 ![basic function](https://lee-img-bed.oss-cn-shenzhen.aliyuncs.com/el-sku.png)
 
+[在线示例及 API 文档](https://leezeehowe.github.io/el-sku/)
+
 ## Table of Contents
 
 - [Features](#features)
 - [Install](#install)
 - [Links](#links)
-- [Contributing](#contributing)
-- [Contributors](#contributors)
 - [License](#license)
-
-#table-of-contents)
 
 ## Features
 
@@ -116,40 +114,16 @@ const customAssistance = [
 
 ## Install
 
-[⬆ Back to Top](#table-of-contents)
+```
+npm i @leezeehowe/el-sku
+```
 
-#table-of-contents)
+[⬆ Back to Top](#table-of-contents)
 
 ## Links
 
-- [docs](https://lee.github.io/el-sku/)
-
-[⬆ Back to Top](#table-of-contents)
-
-## Contributing
-
-For those who are interested in contributing to this project, such as:
-
-- report a bug
-- request new feature
-- fix a bug
-- implement a new feature
-
-Please refer to our [contributing guide](https://github.com/FEMessage/.github/blob/master/CONTRIBUTING.md).
-
-[⬆ Back to Top](#table-of-contents)
-
-## Contributors
-
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore -->
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
-
-[⬆ Back to Top](#table-of-contents)
+- [api documents](https://leezeehowe.github.io/el-sku/)
+- [online sample](https://leezeehowe.github.io/el-sku/)
 
 ## License
 
