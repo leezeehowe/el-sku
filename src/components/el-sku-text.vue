@@ -11,7 +11,6 @@
       size="small"
       placeholder="enter.."
       clearable
-      @change="handleChange"
     ></el-input>
   </div>
 </template>
@@ -24,11 +23,11 @@ export default {
     ElInput: Input,
     ElTag: Tag
   },
+  model: {
+    prop: 'value',
+    event: 'change'
+  },
   props: {
-    prop: {
-      type: String,
-      required: true
-    },
     value: {
       type: null,
       default: ''
@@ -44,13 +43,8 @@ export default {
     }
   },
   watch: {
-    value: function(n) {
-      this.val = n
-    }
-  },
-  methods: {
-    handleChange() {
-      this.$emit('change', this.prop, this.val)
+    val: function(n) {
+      this.$emit('change', n)
     }
   }
 }

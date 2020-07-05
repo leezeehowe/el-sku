@@ -42,8 +42,6 @@
                 :is="item.component"
                 v-model="scope.row[item.prop]"
                 :preview="editableRow !== scope.$index"
-                :prop="item.prop"
-                @change="handleChange"
               ></component>
             </slot>
             <!-- @slot 插槽区域，可自定义表单列 end-->
@@ -112,9 +110,8 @@ import {
   Tag,
   MessageBox
 } from 'element-ui'
-import ElSkuCode from './components/el-sku-code.vue'
-import ElSkuPrice from './components/el-sku-price.vue'
-import ElSkuStock from './components/el-sku-stock.vue'
+import ElSkuText from './components/el-sku-text.vue'
+import ElSkuNumber from './components/el-sku-number.vue'
 import {
   extraSpecHead,
   extraSpecVal,
@@ -134,9 +131,8 @@ export default {
     ElDropdownMenu: DropdownMenu,
     ElDropdownItem: DropdownItem,
     ElTag: Tag,
-    ElSkuCode,
-    ElSkuPrice,
-    ElSkuStock
+    ElSkuText,
+    ElSkuNumber
   },
   model: {
     prop: 'value',
@@ -261,21 +257,21 @@ export default {
           label: 'SKU编码',
           default: '',
           width: 150,
-          component: 'ElSkuCode'
+          component: 'ElSkuText'
         },
         {
           prop: 'price',
           label: '价格',
           default: 0,
           width: 150,
-          component: 'ElSkuPrice'
+          component: 'ElSkuNumber'
         },
         {
           prop: 'stock',
           label: '库存',
           default: 0,
           width: 150,
-          component: 'ElSkuStock'
+          component: 'ElSkuNumber'
         }
       ],
       tableData: [],
@@ -377,6 +373,11 @@ export default {
             cancelButtonText: '取消'
           }
         )).value
+      }
+      try {
+        price = Number(price)
+      } catch (error) {
+        price = 0
       }
       clone.forEach(i => {
         i.price = price

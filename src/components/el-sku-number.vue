@@ -8,8 +8,8 @@
       :min="0"
       label="描述文字"
       size="mini"
+      :precision="2"
       controls-position="right"
-      @change="handleChange"
     ></el-input-number>
   </div>
 </template>
@@ -17,15 +17,15 @@
 <script>
 import {InputNumber} from 'element-ui'
 export default {
-  name: 'ElSkuStock',
+  name: 'ElSkuNumber',
   components: {
     ElInputNumber: InputNumber
   },
+  model: {
+    prop: 'value',
+    event: 'change'
+  },
   props: {
-    prop: {
-      type: String,
-      required: true
-    },
     value: {
       type: Number,
       default: 0
@@ -41,13 +41,8 @@ export default {
     }
   },
   watch: {
-    value: function(n) {
-      this.val = n
-    }
-  },
-  methods: {
-    handleChange() {
-      this.$emit('change', this.prop, this.val)
+    val: function(n) {
+      this.$emit('change', n)
     }
   }
 }
