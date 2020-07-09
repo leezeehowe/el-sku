@@ -21,9 +21,7 @@ this[Symbol.for('el-sku-event-bus')].$emit('slot-changed', prop, val)
 ``` vue
 <template>
   <el-sku :customColumn="customColumn" :specification="specification" v-model="data">
-    <template #status="scope">
-      {{scope.table.row.status}}
-    </template>
+
     <template #album="{table}">
       {{table.row.album.join("，")}}
     </template>
@@ -38,6 +36,10 @@ this[Symbol.for('el-sku-event-bus')].$emit('slot-changed', prop, val)
 </template>
 
 <script>
+
+/**
+* 规格属性数据
+*/
 const specifications = [
     {
         id: 1,
@@ -86,12 +88,16 @@ const specifications = [
     }
 ]
 
+/**
+* 自定义列数据
+*/
 const customColumns = [
     {
         prop: 'status',
         label: '有效',
         width: 100,
-        default: true
+        default: true,
+        type: 'switch'
     },
     {
         prop: 'album',
@@ -106,6 +112,7 @@ const customColumns = [
         default: 0
     }
 ]
+
 export default {
   data() {
     return {

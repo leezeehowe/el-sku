@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="preview">
+    <div v-if="disabled">
       <el-tag v-if="!value" type="danger">未填</el-tag>
       <el-tag v-else>{{ value }}</el-tag>
     </div>
@@ -32,7 +32,7 @@ export default {
       type: null,
       default: ''
     },
-    preview: {
+    disabled: {
       type: Boolean,
       default: true
     }

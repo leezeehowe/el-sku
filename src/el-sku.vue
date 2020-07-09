@@ -39,9 +39,9 @@
               }"
             >
               <component
-                :is="item.component"
+                :is="item.builtinComponent"
                 v-model="scope.row[item.prop]"
-                :preview="editableRow !== scope.$index"
+                :disabled="editableRow !== scope.$index"
               ></component>
             </slot>
             <!-- @slot 插槽区域，可自定义表单列 end-->
@@ -110,15 +110,16 @@ import {
   Tag,
   MessageBox
 } from 'element-ui'
-import ElSkuText from './components/el-sku-text.vue'
-import ElSkuNumber from './components/el-sku-number.vue'
+// import ElSkuText from './components/el-sku-text.vue'
+// import ElSkuNumber from './components/el-sku-number.vue'
+import {injectBuiltinComponent, mapBuiltinComponent} from './columnType.js'
 import {
   extraSpecHead,
   extraSpecVal,
   generateSku,
   mixSkuAndColumn
 } from './methods'
-import {specificationValidator} from './validator.js'
+import {specificationValidator, customColumnValidator} from './validator.js'
 import {slotChangedEvent} from './event.js'
 export default {
   name: 'ElSku',
@@ -131,8 +132,7 @@ export default {
     ElDropdownMenu: DropdownMenu,
     ElDropdownItem: DropdownItem,
     ElTag: Tag,
-    ElSkuText,
-    ElSkuNumber
+    ...injectBuiltinComponent()
   },
   model: {
     prop: 'value',
@@ -155,7 +155,7 @@ export default {
      */
     height: {
       type: Number,
-      default: 300
+      default: undefined
     },
     /**
      * 是否斑马行
@@ -221,7 +221,8 @@ export default {
      */
     customColumn: {
       type: Array,
-      default: () => []
+      default: () => [],
+      validator: customColumnValidator
     },
     /**
      * SKU编码生成策略，默认策略：`${商品id}-${index}`，要求返回一个数组，顺序对应tableData。
@@ -257,21 +258,21 @@ export default {
           label: 'SKU编码',
           default: '',
           width: 150,
-          component: 'ElSkuText'
+          type: 'text'
         },
         {
           prop: 'price',
           label: '价格',
           default: 0,
           width: 150,
-          component: 'ElSkuNumber'
+          type: 'number'
         },
         {
           prop: 'stock',
           label: '库存',
           default: 0,
           width: 150,
-          component: 'ElSkuNumber'
+          type: 'number'
         }
       ],
       tableData: [],
@@ -290,14 +291,25 @@ export default {
         priceDisabled,
         stockDisabled
       } = this
-      return [skuCodeDisabled, priceDisabled, stockDisabled]
-        .map((_, index) => {
-          const clone = JSON.parse(JSON.stringify(defaultColumn[index]))
-          clone.disabled = _
-          return clone
-        })
-        .filter(_ => !_.disabled)
-        .concat(customColumn)
+      return (
+        [skuCodeDisabled, priceDisabled, stockDisabled]
+          // 给用户要移除的默认列设置flag
+          .map((whetherDisable, index) => {
+            const clone = JSON.parse(JSON.stringify(defaultColumn[index]))
+            clone.disabled = whetherDisable
+            return clone
+          })
+          // 过滤用户要移除的默认列
+          .filter(_ => !_.disabled)
+          // 合并自定义列
+          .concat(customColumn)
+          // 映射type -> 内置组件
+          .map(column => {
+            // vue组件创建时会进行prop的校验，所以这里不校验用户填写的type
+            column.builtinComponent = mapBuiltinComponent(column.type)
+            return column
+          })
+      )
     }
   },
   watch: {

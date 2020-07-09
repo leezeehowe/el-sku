@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="preview">{{ value }}</div>
+    <div v-if="disabled">{{ value }}</div>
     <el-input-number
       v-else
       v-model="val"
@@ -30,7 +30,7 @@ export default {
       type: Number,
       default: 0
     },
-    preview: {
+    disabled: {
       type: Boolean,
       default: true
     }
