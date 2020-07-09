@@ -1,12 +1,11 @@
 {
   "name": "@leezeehowe/el-sku",
-  "version": "1.0.2",
+  "version": "1.1.1",
   "description": "",
   "author": "https://github.com/leezeehowe",
   "license": "MIT",
   "repository": {
-    "type": "git",
-    "url": "https://github.com/leezeehowe/el-sku.git"
+    "type": "git"
   },
   "keywords": [
     "vue",

@@ -1,3 +1,4 @@
+os: linux
 branches:
   only:
   - master
@@ -18,7 +19,7 @@ after_script:
 cache: yarn
 deploy:
 - provider: npm
-  skip_cleanup: true
+  cleanup: false
   email: leezeehowe@gmail.com
-  api_key: $NPM_TOKEN
+  api_token: $NPM_TOKEN
   
