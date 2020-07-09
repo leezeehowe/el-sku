@@ -6,8 +6,12 @@
       :size="size"
       :height="height"
       :stripe="stripe"
+      :fit="true"
     >
+      <!-- 序号列 -->
       <el-table-column v-if="showIndex" type="index"></el-table-column>
+      <!-- 序号列 end-->
+
       <!-- sku的属性列，不可编辑 -->
       <template v-for="item in skusColumns">
         <el-table-column
@@ -110,8 +114,6 @@ import {
   Tag,
   MessageBox
 } from 'element-ui'
-// import ElSkuText from './components/el-sku-text.vue'
-// import ElSkuNumber from './components/el-sku-number.vue'
 import {injectBuiltinComponent, mapBuiltinComponent} from './columnType.js'
 import {
   extraSpecHead,
@@ -149,6 +151,10 @@ export default {
     size: {
       type: String,
       default: 'medium'
+    },
+    inline: {
+      type: Boolean,
+      default: false
     },
     /**
      * 表格宽度，参数值和element-ui一致
@@ -252,7 +258,7 @@ export default {
   },
   data() {
     return {
-      defaultColumn: [
+      builtInColumn: [
         {
           prop: 'skuCode',
           label: 'SKU编码',
@@ -285,7 +291,7 @@ export default {
     },
     editableColumns: function() {
       const {
-        defaultColumn,
+        builtInColumn,
         customColumn,
         skuCodeDisabled,
         priceDisabled,
@@ -295,7 +301,7 @@ export default {
         [skuCodeDisabled, priceDisabled, stockDisabled]
           // 给用户要移除的默认列设置flag
           .map((whetherDisable, index) => {
-            const clone = JSON.parse(JSON.stringify(defaultColumn[index]))
+            const clone = JSON.parse(JSON.stringify(builtInColumn[index]))
             clone.disabled = whetherDisable
             return clone
           })
@@ -304,13 +310,17 @@ export default {
           // 合并自定义列
           .concat(customColumn)
           // 映射type -> 内置组件
-          .map(column => {
-            // vue组件创建时会进行prop的校验，所以这里不校验用户填写的type
-            column.builtinComponent = mapBuiltinComponent(column.type)
-            return column
-          })
+          // .map(column => {
+          //   // vue组件创建时会进行prop的校验，所以这里不校验用户填写的type
+          //   column.builtinComponent = mapBuiltinComponent(column.type)
+          //   return column
+          // })
       )
-    }
+    },
+    normalColumns: function() {
+      return [].concat(this.skusColumns)
+    },
+    expandedColumns: function() {}
   },
   watch: {
     tableData: {
