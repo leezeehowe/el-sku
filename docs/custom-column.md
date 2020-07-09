@@ -39,12 +39,16 @@ interface customColumn {
 
 ``` vue
 <template>
-  <el-sku :customColumn="customColumn" :specification="specification" v-model="data">
+  <el-sku v-model="data" :customColumn="customColumn" :specification="specification" :skuCodeDisabled="true" :priceDisabled="true" :stockDisabled="true">
     <template #album="{table}">
       {{table.row.album.join("，")}}
     </template>
     <template #stock="{table: {row}}">
         <h1>{{row.stock}}，替换默认列模板</h1>
+    </template>
+    <template #marketPrice="{table: {row, editable}}">
+        <b v-if="!editable">{{row.marketPrice}}</b>
+        <input v-else type="text" name="marketPrice" :value="row.marketPrice" @change="handleChange">
     </template>
   </el-sku>
 </template>
@@ -52,9 +56,7 @@ interface customColumn {
 <script>
 
 /**
-
 * 规格属性数据
-
 */
 const specifications = [
     {
@@ -86,28 +88,11 @@ const specifications = [
                 text: '5.8'
             }
         ]
-    },
-    {
-        id: 3,
-        prop: 'cpu',
-        label: 'CPU',
-        values: [
-            {
-                id: 31,
-                text: 'I5'
-            },
-            {
-                id: 32,
-                text: 'I7'
-            }
-        ]
     }
 ]
 
 /**
-
 * 自定义列数据
-
 */
 const customColumns = [
     {
@@ -127,8 +112,7 @@ const customColumns = [
         prop: 'marketPrice',
         label: '市场价',
         width: 200,
-        default: 0,
-        type: 'number'
+        default: 0
     }
 ]
 
