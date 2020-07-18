@@ -1,3 +1,5 @@
+import {getTypes as builtInComponentTypeArray} from './columnType'
+
 /**
  * 如果有则必须是：假如obj有该属性，则必须是options指定的可选值或之一。
  * 如果options是对象，则判断对象的内容是否相等。
@@ -49,9 +51,24 @@ export const specificationValidator = val => {
 export const customColumnValidator = val => {
   const _validate = (item = {}) => {
     return (
-      typeof item['prop'] == 'string' &&
-      typeof item['label'] == 'string' &&
-      shouldBe(item, 'type', ['number', 'text', 'switch'])
+      typeof item['prop'] === 'string' &&
+      typeof item['label'] === 'string' &&
+      shouldBe(item, 'type', builtInComponentTypeArray())
+    )
+  }
+  return Array.isArray(val) && val.every(_validate)
+}
+
+export const customAssistValidator = val => {
+  const _validate = (item = {}) => {
+    return (
+      typeof item['prop'] === 'string' &&
+      typeof item['name'] === 'string' &&
+      typeof item['label'] === 'string' &&
+      item['prop'] &&
+      item['name'] &&
+      item['label'] &&
+      typeof item['cb'] === 'function'
     )
   }
   return Array.isArray(val) && val.every(_validate)

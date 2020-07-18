@@ -19,3 +19,10 @@ export const injectBuiltinComponent = function() {
 export const mapBuiltinComponent = function(type) {
   return map[type]
 }
+
+export const getTypes = (function() {
+  const types = Object.keys(map)
+  return function() {
+    return types
+  }
+})()
