@@ -10,7 +10,8 @@ import {
   Input,
   Tag,
   InputNumber,
-  Switch
+  Switch,
+  Tooltip
 } from 'element-ui'
 
 // `Vue.use` automatically prevents you from using
@@ -40,6 +41,7 @@ if (GlobalVue) {
   GlobalVue.use(Tag)
   GlobalVue.use(InputNumber)
   GlobalVue.use(Switch)
+  GlobalVue.use(Tooltip)
 }
 
 // To allow use as module (npm/webpack/etc.) export component

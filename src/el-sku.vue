@@ -16,6 +16,7 @@
       <template v-for="item in skusColumns">
         <el-table-column
           :key="item.prop"
+          :show-overflow-tooltip="item.tooltip || true"
           align="center"
           :prop="item.prop"
           :label="item.label"
@@ -63,18 +64,23 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>
-                <div @click="handleAutoFillPrice">自动填充价格</div>
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <div @click="handleAutoFillCode">自动填充编码</div>
-              </el-dropdown-item>
-              <el-dropdown-item
-                v-for="({label, name}, index) in assists"
-                :key="`assist-${index}`"
+              <div
+                v-for="({label, name, desc}, index) in assists"
+                :key="`assist-${name}-${index}`"
               >
-                <div :data-name="name" @click="dispatchAssist">{{ label }}</div>
-              </el-dropdown-item>
+                <el-tooltip
+                  :disabled="!desc"
+                  :content="desc"
+                  placement="right-end"
+                  effect="dark"
+                >
+                  <el-dropdown-item>
+                    <div :data-name="name" @click="dispatchAssist">
+                      {{ label }}
+                    </div>
+                  </el-dropdown-item>
+                </el-tooltip>
+              </div>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -112,7 +118,8 @@ import {
   DropdownItem,
   DropdownMenu,
   Tag,
-  MessageBox
+  MessageBox,
+  Tooltip
 } from 'element-ui'
 import {injectBuiltinComponent, mapBuiltinComponent} from './columnType.js'
 import {
@@ -121,8 +128,13 @@ import {
   generateSku,
   mixSkuAndColumn
 } from './methods'
-import {specificationValidator, customColumnValidator} from './validator.js'
+import {
+  specificationValidator,
+  customColumnValidator,
+  customAssistValidator
+} from './validator.js'
 import {slotChangedEvent} from './event.js'
+import {builtInColumns, builtInAssists} from './builtInData'
 export default {
   name: 'ElSku',
   components: {
@@ -134,6 +146,7 @@ export default {
     ElDropdownMenu: DropdownMenu,
     ElDropdownItem: DropdownItem,
     ElTag: Tag,
+    ElTooltip: Tooltip,
     ...injectBuiltinComponent()
   },
   model: {
@@ -251,36 +264,14 @@ export default {
     /**
      * 辅助操作栏目配置项
      */
-    assists: {
+    customAssists: {
       type: Array,
+      validator: customAssistValidator,
       default: () => []
     }
   },
   data() {
     return {
-      builtInColumn: [
-        {
-          prop: 'skuCode',
-          label: 'SKU编码',
-          default: '',
-          width: 150,
-          type: 'text'
-        },
-        {
-          prop: 'price',
-          label: '价格',
-          default: 0,
-          width: 150,
-          type: 'number'
-        },
-        {
-          prop: 'stock',
-          label: '库存',
-          default: 0,
-          width: 150,
-          type: 'number'
-        }
-      ],
       tableData: [],
       editableRow: -1
     }
@@ -290,18 +281,12 @@ export default {
       return extraSpecHead(this.specification)
     },
     editableColumns: function() {
-      const {
-        builtInColumn,
-        customColumn,
-        skuCodeDisabled,
-        priceDisabled,
-        stockDisabled
-      } = this
+      const {customColumn, skuCodeDisabled, priceDisabled, stockDisabled} = this
       return (
         [skuCodeDisabled, priceDisabled, stockDisabled]
           // 给用户要移除的默认列设置flag
           .map((whetherDisable, index) => {
-            const clone = JSON.parse(JSON.stringify(builtInColumn[index]))
+            const clone = JSON.parse(JSON.stringify(builtInColumns[index]))
             clone.disabled = whetherDisable
             return clone
           })
@@ -310,17 +295,18 @@ export default {
           // 合并自定义列
           .concat(customColumn)
           // 映射type -> 内置组件
-          // .map(column => {
-          //   // vue组件创建时会进行prop的校验，所以这里不校验用户填写的type
-          //   column.builtinComponent = mapBuiltinComponent(column.type)
-          //   return column
-          // })
+          .map(column => {
+            // vue组件创建时会进行prop的校验，所以这里不校验用户填写的type
+            column.builtinComponent = mapBuiltinComponent(column.type)
+            return column
+          })
       )
     },
-    normalColumns: function() {
-      return [].concat(this.skusColumns)
-    },
-    expandedColumns: function() {}
+    assists: function() {
+      builtInAssists[0].cb = this.handleAutoFillPrice
+      builtInAssists[1].cb = this.handleAutoFillCode
+      return this.customAssists.concat(builtInAssists)
+    }
   },
   watch: {
     tableData: {
@@ -360,6 +346,9 @@ export default {
     GetTableData() {
       return JSON.parse(JSON.stringify(this.tableData))
     },
+    /**
+     * 点击侧边栏的编辑按钮的处理函数
+     */
     handleEdit(index, row) {
       this.editableRow = index
       /**
@@ -369,6 +358,9 @@ export default {
        */
       this.$emit('row-edit', index, row)
     },
+    /**
+     * 点击侧边栏的确认按钮的处理函数
+     */
     handleConfirm(index, row) {
       this.editableRow = -1
       /**
@@ -378,59 +370,77 @@ export default {
        */
       this.$emit('row-confirm', index, row)
     },
-    handleChange(prop, val) {
-      const clone = JSON.parse(JSON.stringify(this.tableData))
-      clone[this.editableRow][prop] = val
-      this.tableData = clone
-    },
+    /**
+     * 内置辅助功能：填充价格
+     */
     async handleAutoFillPrice() {
-      const clone = JSON.parse(JSON.stringify(this.tableData))
       let price = this.commodity.price
       if (typeof price !== 'number') {
-        price = (await MessageBox.prompt(
-          '未获取到商品价格，请手动输入',
-          '提示',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消'
-          }
-        )).value
+        try {
+          price = (await MessageBox.prompt(
+            '未获取到商品价格，请手动输入',
+            '提示',
+            {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消'
+            }
+          )).value
+        } catch (error) {
+          return
+        }
       }
       try {
         price = Number(price)
+        if (Number.isNaN(price)) return
       } catch (error) {
-        price = 0
+        return
       }
-      clone.forEach(i => {
-        i.price = price
-      })
-      this.tableData = clone
+      return this.tableData.map(() => price)
     },
+    /**
+     * 内置辅助功能；填充SKU编码
+     */
     handleAutoFillCode() {
-      const codes = this.autoFillCodeStrategy()(
+      return this.autoFillCodeStrategy()(
         JSON.parse(JSON.stringify(this.tableData)),
         this.commodity
       )
-      const clone = JSON.parse(JSON.stringify(this.tableData))
-      clone.forEach((i, index) => (i.skuCode = codes[index]))
-      this.tableData = clone
     },
+    /**
+     * 分发自定义辅助功能
+     */
     dispatchAssist(event) {
       const {tableData, editableRow} = this
       const name = event.target.dataset.name
-      const {prop, cb} = this.assists.find(_ => _.name === name)
-      cb(JSON.parse(JSON.stringify(tableData)), editableRow, event).forEach(
-        (i, index) => {
-          if (index >= tableData.length) {
-            throw new Error('自定义辅助功能的回调函数返回数组长度有误！')
-          } else if (
-            !Object.prototype.hasOwnProperty.call(tableData[index], prop)
-          ) {
-            throw new Error('自定义辅助功能的prop属性指定有误！')
-          } else tableData[index][prop] = i
-        }
+      const {prop, cb, async} = this.assists.find(_ => _.name === name)
+      const cbResult = cb(
+        // 引用传递，避免被修改
+        JSON.parse(JSON.stringify(tableData)),
+        editableRow,
+        event
       )
-      this.tableData = tableData
+      // 统一包装异步和同步
+      new Promise(resolve => {
+        if (async) {
+          cbResult.then(res => {
+            resolve(res)
+          })
+        } else {
+          resolve(cbResult)
+        }
+      }).then(res => {
+        if (Array.isArray(res)) {
+          res.forEach((i, index) => {
+            if (
+              index < tableData.length &&
+              Object.prototype.hasOwnProperty.call(tableData[index], prop)
+            ) {
+              tableData[index][prop] = i
+            }
+          })
+          this.tableData = tableData
+        }
+      })
     }
   }
 }

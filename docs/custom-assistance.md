@@ -1,4 +1,4 @@
-自定义辅助操作，允许向辅助操作栏目新增辅助功能，编辑SKU是一件挺繁琐的事情。
+自定义辅助操作，编辑SKU是一件挺繁琐的事情，允许向辅助操作栏目添加辅助功能解放人类的双手，支持异步操作。
 
 **自定义辅助操作的配置项：**
 
@@ -10,18 +10,20 @@ interface assist {
     label: string,
     // 要改变的字段
     prop: string,
-    // 回调函数，请返回一个数组，数组中的元素顺序请对应表格数据的顺序
+    // 回调函数是否异步，默认为false
+    async: boolean,
+    // 回调函数，请返回一个数组，数组中的元素顺序请对应表格行数据的顺序
     cb: Function
 }
 ```
 
 ``` vue
 <template>
-  <el-sku :specification="specification" :assists="assists"></el-sku>
+  <el-sku :specification="specification" :customAssists="customAssists"></el-sku>
 </template>
 
 <script>
-const specifications = [
+const specification = [
     {
         id: 1,
         prop: 'color',
@@ -69,7 +71,7 @@ const specifications = [
     }
 ]
 
-const assists = [
+const customAssists = [
     {
         name: 'autofillStock',
         label: '自动填充库存',
@@ -84,8 +86,8 @@ const assists = [
 export default {
   data() {
     return {
-      specification: specifications,
-      assists: assists
+      specification: specification,
+      customAssists
     }
   }
 }
