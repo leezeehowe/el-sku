@@ -30,7 +30,9 @@ interface customColumn {
     label: string,
     // 列宽度
     width?: number,
-    // 默认值
+    // 当内容过长被隐藏时显示，默认为true
+    tooltip?: boolean
+    // 该列字段的默认值
     default?: any,
     // 设置type可以使用el-sku的内置组件，目前有以下三个内置组件
     type?: 'switch' | 'number' | 'text'
@@ -66,7 +68,7 @@ const specifications = [
         values: [
             {
                 id: 11,
-                text: '黑色'
+                text: '黑色黑色黑色黑色黑色黑色黑色黑色黑色黑色黑色黑色黑色黑色黑色黑色黑色黑色黑色黑色黑色黑色'
             },
             {
                 id: 12,
